@@ -8,6 +8,12 @@ namespace OOP_potlas_gym
 {
     internal class GymMember
     {
+        public int ID { get; }
+        public string Name { get; set; }
+        public double MonthlyFee { get; private set; }
+        public int RemainingMonths { get; set; } = 0;
+        public int Age { get; set; }
+
         /* PROPERTY-k
          *  - A tag egyedi azonosítója. A konstruktor állítja be, később nem módosítható
          *  - A tag neve. Nem lehet üres vagy csak szóközökből álló szöveg.
@@ -16,40 +22,50 @@ namespace OOP_potlas_gym
          *  - A tag életkora. Csak 16 és 100 közötti értéket fogadjon el.
          */
 
+        // KONSTRUKTOR - minden property-nek adjon értéket
+        public GymMember(int id, string name, double monthlyFee, int age)
+        {
+            ID = id;
+            Name = name;
+            MonthlyFee = monthlyFee;
+            RemainingMonths = 0;
+            Age = age;
+        }
 
-
-       // KONSTRUKTOR - minden property-nek adjon értéket
-
-
-        /// Kiírja a klubtag adatait a konzolra 
         public void DisplayMemberInfo()
         {
+            Console.WriteLine($"ID: {ID}");
+            Console.WriteLine($"Név: {Name}");
+            Console.WriteLine($"Havi tagsági díj: {MonthlyFee}");
+            Console.WriteLine($"Hátralévő hónapok: {RemainingMonths}");
+            Console.WriteLine($"Életkor: {Age}");
         }
 
-        /// Meghosszabbítja a tagságot a megadott hónapokkal.
-        /// Nulla vagy negatív érték esetén ne változtasson semmit.
         public void RenewMembership(int months)
         {
+            if (months > 0)
+            {
+                RemainingMonths += months;
+            }
         }
 
-        /// Megadja, hogy aktív-e a tagság (van-e még hátralévő hónap).
         public bool IsMembershipActive()
         {
-            return false;   //ezt a sort töröld ki, mielőtt megoldod a feladatot
+            return RemainingMonths > 0;
         }
 
-        /// Kiszámítja a megadott számú hónap teljes tagsági díját.
-        /// Nem pozitív hónapszám esetén 0-t ad vissza.
         public double CalculateTotalFee(int months)
         {
-            return 0;   //ezt a sort töröld ki, mielőtt megoldod a feladatot
-        }
+            if (months <= 0)
+            {
+                return 0;
+            }
 
-        /// Megadja, hogy a tag részt vehet-e haladó edzésen:
-        /// legalább 18 évesnek kell lennie, és orvosi engedély is szükséges.
+            return MonthlyFee * months;
+        }
         public bool CanJoinAdvancedTraining(bool medicalClearance)
         {
-            return false;   //ezt a sort töröld ki, mielőtt megoldod a feladatot
+            return Age >= 18 && medicalClearance;
         }
     }
 }

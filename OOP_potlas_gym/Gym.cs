@@ -13,40 +13,51 @@ namespace OOP_potlas_gym
          * - Az edzőterem neve
          * - Az edzőterem tagjait tároló lista
          */
-       
+
+        public string Name { get; set; }
+        public List<GymMember> Members { get; set; }
+
         //KONSTRUKTOR - megkapja a nevet és a kezdeti tagok listáját
+        public Gym(string name, List<GymMember> members)
+        {
+            Name = name;
+            Members = members ?? new List<GymMember>();
+        }
 
         //METÓDUSOK
 
-
-        /// Hozzáad egy tagot a listához. Null értéket ne adjon hozzá.
         public void AddMember(GymMember member)
         {
+            if (member != null)
+            {
+                Members.Add(member);
+            }
         }
 
-        /// Kiírja a konzolra az edzőterem összes tagjának adatait.
         public void DisplayAllMembers()
         {
+            foreach (GymMember member in Members)
+            {
+                member.DisplayMemberInfo();
+                Console.WriteLine();
+            }
         }
 
-        /// Megkeresi a megadott azonosítójú klubtagot.
-        /// Ha nincs ilyen tag, null értéket ad vissza.
         public GymMember FindMember(int memberId)
         {
-            return null;    //ezt a sort töröld ki, mielőtt megoldod a feladatot
+            return Members.FirstOrDefault(member => member != null && member.ID == memberId);
         }
 
-        /// Visszaadja az összes tag havi tagsági díjának összegét.
         public double GetTotalMonthlyFees()
         {
-            return 0;   //ezt a sort töröld ki, mielőtt megoldod a feladatot
+            return Members
+                .Where(member => member != null)
+                .Sum(static member => member.MonthlyFee);
         }
 
-        /// Megadja, hogy van-e olyan klubtag, akinek az életkora
-        /// nagyobb a paraméterként kapott életkornál.
         public bool HasMemberOverAge(int age)
         {
-            return false;   //ezt a sort töröld ki, mielőtt megoldod a feladatot
+            return Members.Any(member => member != null && member.Age > age);
         }
     }
 }
